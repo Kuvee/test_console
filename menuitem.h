@@ -4,14 +4,18 @@
 #include "Terminal.h"
 #include "Arduino.h"
 
+#ifdef __cplusplus
+ extern "C" {
+#endif
+
 extern Terminal term;
 
 typedef enum {menu, heading, display, control} MenuType;
 typedef char * (*callback_function)(bool); // type for conciseness
 
 #define MAX_NAME_LEN (80-10-10)
-#define MAKE_PORT(x, io) (new Menu##io(#x, io(x)))  //use this macro to create a port (it saves name as well as creatign the IO
-#define REUSE_PORT(x, io, port) (new Menu##io(#x, port))  //use this macro if you created the port externally
+#define MAKE_DIGINPORT(x) (new MenuDigitalIn(#x, x))  //use this macro to create a port (it saves name as well as creating the IO
+#define MAKE_DIGOUTPORT(x) (new MenuDigitalOut(#x, x))  //use this macro to create a port (it saves name as well as creating the IO
 
 class MenuAction;
 class Page;
@@ -59,7 +63,7 @@ class MenuDigitalIn: public MenuAction {
 public:
     MenuDigitalIn(char const *name, int myIO):
         MenuAction(name)
-    {}
+    {m_io=myIO;}
     
     virtual void getString(char *buf, int bufLen) {
         snprintf(buf, bufLen, "%d", digitalRead(m_io));
@@ -72,18 +76,19 @@ class MenuDigitalOut: public MenuAction {
 public:
     MenuDigitalOut(char const *name, int myIO):
         MenuAction(name)
-    {}
+    {value=0; m_io=myIO;}
     
     virtual void getString(char *buf, int bufLen) {
-        snprintf(buf, bufLen, "%d", digitalRead(m_io));
+		value = 0!=(*portOutputRegister(digitalPinToPort(m_io))&digitalPinToBitMask(m_io));
+        snprintf(buf, bufLen, "%d", value);
     }
     virtual void doAction() {
-        value = !value;
-		digitalWrite(m_io, value);
+		value = 0!=(*portOutputRegister(digitalPinToPort(m_io))&digitalPinToBitMask(m_io));
+		digitalWrite(m_io, !value);
     }
 private:
-    int m_io;
 	bool value;
+    int m_io;
 };
 
 #if 0 
@@ -131,5 +136,8 @@ private:
     bool m_value;
 };
 
+#ifdef __cplusplus
+} // extern "C"
+#endif
 
 #endif
