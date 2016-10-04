@@ -58,6 +58,31 @@ private:
     char const *m_name;
 };
 
+//class to toggle a trigger variable, which would set off other events (such as run an function)
+class MenuTriggerVariable: public MenuAction {
+public:
+    MenuTriggerVariable(char const *name, bool triggerinit=false):
+        MenuAction(name)
+    {trigger=triggerinit;}
+    
+    virtual void getString(char *buf, int bufLen) {
+        snprintf(buf, bufLen, "%d", trigger);
+    }
+	bool get() {return trigger;};
+	void clear() {trigger = false;};
+
+	virtual void doAction() {trigger = true; };
+protected:
+	bool trigger;
+};
+
+//class to toggle variable, which would set off other events (such as run an function)
+class MenuToggleVariable: public MenuTriggerVariable {
+public:
+	void set() {trigger = true;};
+
+	virtual void doAction() {trigger = !trigger; }
+};
 
 class MenuDigitalIn: public MenuAction {
 public:
