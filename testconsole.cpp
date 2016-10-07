@@ -111,10 +111,14 @@ int TestConsole::tick(void){
 void TestConsole::status_bar(const char* format, ...)
 {
     char buffer[80];
+    memset(buffer, ' ',sizeof(buffer));
+    buffer[sizeof(buffer)-1]=NULL;  //terminate string
 	term.locate(0,24);
 	va_list argptr;
     va_start(argptr, format);
     vsprintf(buffer, format, argptr);
     va_end(argptr);
-	Serial.print(buffer);
+    buffer[strlen(buffer)] = ' ';  //clear the null terminator so we print the 
+                                   //whole buffer of spaces after our text
+    Serial.print(buffer);
 }
