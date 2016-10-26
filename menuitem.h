@@ -68,20 +68,24 @@ public:
     virtual void getString(char *buf, int bufLen) {
         snprintf(buf, bufLen, "%d", trigger);
     }
-	bool get() {return trigger;};
-	void clear() {trigger = false;};
 
-	virtual void doAction() {trigger = true; };
+    virtual void doAction() {trigger = true; };
+    bool set() {doAction();};
+    bool get() {return trigger;};
+    void clear() {trigger = false;};
+    bool test_and_clear() {bool ret = trigger; trigger=false; return ret;}
+
 protected:
-	bool trigger;
+    bool trigger;
 };
 
 //class to toggle variable, which would set off other events (such as run an function)
 class MenuToggleVariable: public MenuTriggerVariable {
 public:
-	void set() {trigger = true;};
+       MenuToggleVariable(char const *name, bool triggerinit=false): MenuTriggerVariable(name, triggerinit) {};
+       void set() {trigger = true;};
 
-	virtual void doAction() {trigger = !trigger; }
+       virtual void doAction() {trigger = !trigger; };
 };
 
 class MenuDigitalIn: public MenuAction {
