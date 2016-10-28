@@ -19,6 +19,7 @@ public:
     // printf(), put(), baud() etc - inherited from Serial
 
     void cls();
+    void clear_to_eol();
     void HideCursor();
     void locate(int column, int row);
     void foreground(int colour);

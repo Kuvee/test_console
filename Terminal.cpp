@@ -31,6 +31,10 @@ void Terminal::cls() {
     Serial.print("\033[2J");
 }
 
+void Terminal::clear_to_eol() {
+       Serial.print("\033"+"[K"); 
+}
+
 void Terminal::HideCursor() {
     locate(50, 0);
 }

@@ -108,15 +108,15 @@ public:
     {value=0; m_io=myIO;}
     
     virtual void getString(char *buf, int bufLen) {
-		value = 0!=(*portOutputRegister(digitalPinToPort(m_io))&digitalPinToBitMask(m_io));
+        value = 0!=(*portOutputRegister(digitalPinToPort(m_io))&digitalPinToBitMask(m_io));
         snprintf(buf, bufLen, "%d", value);
     }
     virtual void doAction() {
-		value = 0!=(*portOutputRegister(digitalPinToPort(m_io))&digitalPinToBitMask(m_io));
-		digitalWrite(m_io, !value);
+        value = 0!=(*portOutputRegister(digitalPinToPort(m_io))&digitalPinToBitMask(m_io));
+        digitalWrite(m_io, !value);
     }
 private:
-	bool value;
+    bool value;
     int m_io;
 };
 
