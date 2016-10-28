@@ -32,7 +32,7 @@ void Terminal::cls() {
 }
 
 void Terminal::clear_to_eol() {
-       Serial.print("\033"+"[K"); 
+       Serial.print("\033[K"); 
 }
 
 void Terminal::HideCursor() {

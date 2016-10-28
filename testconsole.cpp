@@ -4,14 +4,22 @@ TestConsole::TestConsole(const char * name_p):
     term(),
     name(name_p),
     num_pages(0),
-    current_page(0)
+    current_page(0),
+    next_status_line(0),
+    sb_needs_update(true)
 {       
  //    term.baud(baud_rate);
  //       term.printf("TestConsole::TestConsole('%')\r\n",name);
         term.HideCursor();
        for(int i = 0; i < MAX_PAGES; i++) page[i] = NULL;   //init all pages to NULL
        active_page = page[current_page];
-
+        
+       for(int i = 0; i < NUM_STATUS_LINES; i++) {
+             //fill the buffer will null terminated spaces
+            memset(sb_buffer[i], ' ',SZ_SB_BUF);
+            sb_buffer[i][SZ_SB_BUF-1]=NULL;  //terminate string          
+       }
+       
     }
 
 //Page& TestConsole::add_page(Page const &page_p){
@@ -95,6 +103,7 @@ int TestConsole::tick(void){
         for(int index=0; index < num_pages; index++){
             if(page[index]->check_active()){
                  page_change(index);
+                 sb_needs_update = true;
                 }
         }
         
@@ -105,20 +114,27 @@ int TestConsole::tick(void){
         {
                 term.printf("invalid page %p", active_page);
         }
+        
+        if(sb_needs_update) update_status_bar();
     return 0;
     }    
-	
+
+void TestConsole::update_status_bar(){
+    for(int i = 0; i < NUM_STATUS_LINES; i++){
+    term.locate(0,TERMINAL_HEIGHT-i);
+    Serial.print(sb_buffer[(i+next_status_line)%NUM_STATUS_LINES]);
+    term.clear_to_eol();
+    }
+}
 void TestConsole::status_bar(const char* format, ...)
 {
-    char buffer[80];
-    memset(buffer, ' ',sizeof(buffer));
-    buffer[sizeof(buffer)-1]=NULL;  //terminate string
-	term.locate(0,24);
-	va_list argptr;
+    next_status_line++;
+    next_status_line = next_status_line%NUM_STATUS_LINES;
+    
+    va_list argptr;
     va_start(argptr, format);
-    vsprintf(buffer, format, argptr);
+    vsprintf(sb_buffer[next_status_line], format, argptr);
     va_end(argptr);
-    buffer[strlen(buffer)] = ' ';  //clear the null terminator so we print the 
-                                   //whole buffer of spaces after our text
-    Serial.print(buffer);
+
+    sb_needs_update = true;
 }
