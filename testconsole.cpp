@@ -121,20 +121,25 @@ int TestConsole::tick(void){
 
 void TestConsole::update_status_bar(){
     for(int i = 0; i < NUM_STATUS_LINES; i++){
-    term.locate(0,TERMINAL_HEIGHT-i);
-    Serial.print(sb_buffer[(i+next_status_line)%NUM_STATUS_LINES]);
+    term.locate(0,TERMINAL_HEIGHT-NUM_STATUS_LINES+i);
+    Serial.print(sb_buffer[(next_status_line+1+i)%NUM_STATUS_LINES]);
     term.clear_to_eol();
     }
 }
 void TestConsole::status_bar(const char* format, ...)
 {
-    next_status_line++;
-    next_status_line = next_status_line%NUM_STATUS_LINES;
+    char buffer[SZ_SB_BUF];
     
     va_list argptr;
     va_start(argptr, format);
-    vsprintf(sb_buffer[next_status_line], format, argptr);
+    vsprintf(buffer, format, argptr);
     va_end(argptr);
 
+    //only buffer and increment if the message is different from the last
+    if(0 != strncmp(buffer,sb_buffer[next_status_line],SZ_SB_BUF)) {
+    next_status_line++;
+    next_status_line = next_status_line%NUM_STATUS_LINES;
+    strncpy(sb_buffer[next_status_line], buffer, SZ_SB_BUF);
     sb_needs_update = true;
+    }
 }

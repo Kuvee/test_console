@@ -7,7 +7,7 @@
 #define MAX_PAGES 9  
 #define TERMINAL_WIDTH 80
 #define TERMINAL_HEIGHT 24
-#define NUM_STATUS_LINES 3
+#define NUM_STATUS_LINES 6
 #define SZ_SB_BUF 80
 
 class TestConsole {
