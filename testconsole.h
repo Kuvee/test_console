@@ -16,6 +16,7 @@ class TestConsole {
     char sb_buffer[NUM_STATUS_LINES][SZ_SB_BUF];
     int next_status_line;
     bool sb_needs_update;
+    void status_bar_addnext(char * buffer, int bufsize);
 
     public:
     TestConsole(const char * Name_p);
@@ -30,6 +31,7 @@ class TestConsole {
     int page_change(int page);
 
     void status_bar(const char* format, ...);
+    void status_bar(const __FlashStringHelper* format);
     void update_status_bar();
     
     };
