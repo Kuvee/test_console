@@ -71,7 +71,7 @@ public:
 
     virtual void doAction() {trigger = true; };
     bool set() {doAction();};
-    bool get() {return trigger;};
+    virtual bool get() {return trigger;};
     void clear() {trigger = false;};
     bool test_and_clear() {bool ret = trigger; trigger=false; return ret;}
 
@@ -82,10 +82,17 @@ protected:
 //class to toggle variable, which would set off other events (such as run an function)
 class MenuToggleVariable: public MenuTriggerVariable {
 public:
-       MenuToggleVariable(char const *name, bool triggerinit=false): MenuTriggerVariable(name, triggerinit) {};
+       MenuToggleVariable(char const *name, bool triggerinit=false): MenuTriggerVariable(name, triggerinit) {override_val=-1;};
        void set() {trigger = true;};
+       void override(int val) {override_val = val;}; 
+       bool get() {
+           if(override_val < 0) return MenuTriggerVariable::get();
+           else return override_val;
+       }
 
        virtual void doAction() {trigger = !trigger; };
+private:
+        int override_val;
 };
 
 class MenuDigitalIn: public MenuAction {
