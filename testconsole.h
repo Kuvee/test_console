@@ -33,6 +33,7 @@ class TestConsole {
     void status_bar(const char* format, ...);
     void status_bar(const __FlashStringHelper* format);
     void update_status_bar();
+    Page* get_active_page() {return active_page;};
     
     };
 
