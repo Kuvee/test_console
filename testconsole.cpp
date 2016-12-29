@@ -1,12 +1,12 @@
 #include "testconsole.h"
 
 TestConsole::TestConsole(const char * name_p):
+    next_status_line(0),
+    sb_needs_update(true),
     term(),
     name(name_p),
     num_pages(0),
-    current_page(0),
-    next_status_line(0),
-    sb_needs_update(true)
+    current_page(0)
 {
  //    term.baud(baud_rate);
  //       term.printf("TestConsole::TestConsole('%')\r\n",name);
@@ -17,7 +17,7 @@ TestConsole::TestConsole(const char * name_p):
        for(int i = 0; i < NUM_STATUS_LINES; i++) {
              //fill the buffer will null terminated spaces
             memset(sb_buffer[i], ' ',SZ_SB_BUF);
-            sb_buffer[i][SZ_SB_BUF-1]=NULL;  //terminate string
+            sb_buffer[i][SZ_SB_BUF-1]='\0';  //terminate string
        }
 
     }
@@ -132,25 +132,39 @@ void TestConsole::status_bar(const char* format, ...)
 
     va_list argptr;
     va_start(argptr, format);
-    vsprintf(buffer, format, argptr);
+    vsnprintf(buffer, sizeof(buffer), format, argptr);
     va_end(argptr);
 
-    status_bar_addnext(buffer, sizeof(buffer));
+    status_bar_addnext(buffer);
 }
 
 void TestConsole::status_bar(const __FlashStringHelper* format)
 {
     String str(format);
-    status_bar_addnext(str.c_str(),str.length());
+    status_bar_addnext(str.c_str());
 }
 
-void TestConsole::status_bar_addnext(char * buffer, int bufsize)
+void TestConsole::status_bar(String str)
+{
+    status_bar_addnext(str);
+}
+
+void TestConsole::status_bar_addnext(char * tmpbuf)
 {
     //only buffer and increment if the message is different from the last
-    if(0 != strncmp(buffer,sb_buffer[next_status_line],SZ_SB_BUF)) {
-    next_status_line++;
-    next_status_line = next_status_line%NUM_STATUS_LINES;
-    strncpy(sb_buffer[next_status_line], buffer, SZ_SB_BUF);
+    if(0 != strncmp(tmpbuf,sb_buffer[next_status_line],SZ_SB_BUF)) {
+    increment_status_line();
+    strncpy(sb_buffer[next_status_line], tmpbuf, SZ_SB_BUF);
+    sb_needs_update = true;
+    }
+}
+
+void TestConsole::status_bar_addnext(String str)
+{
+    //only buffer and increment if the message is different from the last
+    if(0 != strcmp(str.c_str(), sb_buffer[next_status_line])) {
+    increment_status_line();
+//    strncpy(sb_buffer[next_status_line], str.c_str(), sizeof(sb_buffer));
     sb_needs_update = true;
     }
 }

@@ -3,6 +3,8 @@
 #include "Terminal.h"
 #include "page.h"
 #include "menuitem.h"
+#include <string.h>
+
 
 #define MAX_PAGES 9  
 #define TERMINAL_WIDTH 80
@@ -16,7 +18,12 @@ class TestConsole {
     char sb_buffer[NUM_STATUS_LINES][SZ_SB_BUF];
     int next_status_line;
     bool sb_needs_update;
-    void status_bar_addnext(char * buffer, int bufsize);
+    void status_bar_addnext(char *);
+    void status_bar_addnext(String str);
+    inline void increment_status_line(){
+        next_status_line++;
+        next_status_line = next_status_line%NUM_STATUS_LINES;
+    };
 
     public:
     TestConsole(const char * Name_p);
@@ -32,6 +39,8 @@ class TestConsole {
 
     void status_bar(const char* format, ...);
     void status_bar(const __FlashStringHelper* format);
+    void status_bar(String str);
+
     void update_status_bar();
     Page* get_active_page() {return active_page;};
     

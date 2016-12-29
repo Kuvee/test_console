@@ -20,11 +20,11 @@ Terminal::Terminal()  {}
 void Terminal::printf(const char* format, ...)
 {
     char buffer[80];
-	va_list argptr;
+    va_list argptr;
     va_start(argptr, format);
     vsprintf(buffer, format, argptr);
     va_end(argptr);
-	Serial.print(buffer);
+    Serial.print(buffer);
 }
 
 void Terminal::cls() {
@@ -44,27 +44,25 @@ void Terminal::locate(int column, int row) {
     printf("\033[%d;%dH", row + 1, column + 1);
 }
 
-static int rgb888tobgr111(int colour) {
+static int rgb888tobgr111(uint32_t colour) {
     int r = (colour >> 23) & 1;
     int g = (colour >> 15) & 1;
     int b = (colour >> 7) & 1;
     return (b << 2) | (g << 1) | (r << 0);
 }
 
-void Terminal::foreground(int colour) {
+void Terminal::foreground(uint32_t colour) {
     // Set Attribute Mode    <ESC>[{n}m
     // Foreground Colours : 30 + bgr
-	char buffer[20];
     int c = 30 + rgb888tobgr111(colour);
-	printf("\033[%dm", c);
+    printf("\033[%dm", c);
 }
 
-void Terminal::background(int colour) {
+void Terminal::background(uint32_t colour) {
     // Set Attribute Mode    <ESC>[{n}m
     // Background Colours : 40 + bgr
-	char buffer[20];
     int c = 40 + rgb888tobgr111(colour);
-	printf("\033[%dm", c);
+    printf("\033[%dm", c);
 }
 
 void Terminal::box(int x, int y, int w, int h) { 

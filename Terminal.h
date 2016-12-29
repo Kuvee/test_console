@@ -22,8 +22,8 @@ public:
     void clear_to_eol();
     void HideCursor();
     void locate(int column, int row);
-    void foreground(int colour);
-    void background(int colour);
+    void foreground(uint32_t colour);
+    void background(uint32_t colour);
     void box(int x, int y, int w, int h); 
 	void printf(const char* format, ...);
 

@@ -70,7 +70,7 @@ public:
     }
 
     virtual void doAction() {trigger = true; };
-    bool set() {doAction();};
+    void set() {doAction();};
     virtual bool get() {return trigger;};
     void clear() {trigger = false;};
     bool test_and_clear() {bool ret = trigger; trigger=false; return ret;}
