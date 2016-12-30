@@ -18,11 +18,12 @@ class TestConsole {
     char sb_buffer[NUM_STATUS_LINES][SZ_SB_BUF];
     uint8_t next_status_line;
     bool sb_needs_update;
-    void status_bar_addnext(char *);
-    void status_bar_addnext(String str);
-    inline void increment_status_line(){
-        next_status_line++;
-        next_status_line = next_status_line%NUM_STATUS_LINES;
+    void status_bar_addnext(char const *);
+    void status_bar_addnext(String const & str) {
+        status_bar_addnext(str.c_str());
+    }
+    void increment_status_line(){
+        next_status_line = (next_status_line + 1) % NUM_STATUS_LINES;
     };
 
     public:
@@ -39,7 +40,7 @@ class TestConsole {
 
     void status_bar(const char* format, ...);
     void status_bar(const __FlashStringHelper* format);
-    void status_bar(String str);
+    void status_bar(String const & str);
 
     void update_status_bar();
     Page* get_active_page() {return active_page;};

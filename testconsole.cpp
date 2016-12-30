@@ -144,27 +144,17 @@ void TestConsole::status_bar(const __FlashStringHelper* format)
     status_bar_addnext(str.c_str());
 }
 
-void TestConsole::status_bar(String str)
+void TestConsole::status_bar(String const & str)
 {
     status_bar_addnext(str);
 }
 
-void TestConsole::status_bar_addnext(char * tmpbuf)
+void TestConsole::status_bar_addnext(char const * tmpbuf)
 {
     //only buffer and increment if the message is different from the last
-    if(0 != strncmp(tmpbuf,sb_buffer[next_status_line],SZ_SB_BUF)) {
-    increment_status_line();
-    strncpy(sb_buffer[next_status_line], tmpbuf, SZ_SB_BUF);
-    sb_needs_update = true;
-    }
-}
-
-void TestConsole::status_bar_addnext(String str)
-{
-    //only buffer and increment if the message is different from the last
-    if(0 != strcmp(str.c_str(), sb_buffer[next_status_line])) {
-    increment_status_line();
-//    strncpy(sb_buffer[next_status_line], str.c_str(), sizeof(sb_buffer));
-    sb_needs_update = true;
+    if(0 != strncmp(tmpbuf, sb_buffer[next_status_line], sizeof(sb_buffer[0]))) {
+        increment_status_line();
+        strncpy(sb_buffer[next_status_line], tmpbuf, sizeof(sb_buffer[0]));
+        sb_needs_update = true;
     }
 }
