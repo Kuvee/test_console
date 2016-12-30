@@ -44,7 +44,7 @@ Page* TestConsole::add_page(const char * name_p){
 
     }
 
-int TestConsole::page_change(int new_page){
+uint8_t TestConsole::page_change(int new_page){
             if(NULL == page[current_page]) {
                 term.printf("invalid page passed to page_chage\r\n");
                 return current_page;
@@ -64,7 +64,7 @@ int TestConsole::page_change(int new_page){
     }
 
 //here, using knowledge of the page, we process commands
-int TestConsole::process_cmd(char cmd){
+uint8_t TestConsole::process_cmd(char cmd){
     if('x' == cmd) {
         page_change(previous_page);
         return 0;
@@ -91,7 +91,7 @@ int TestConsole::process_cmd(char cmd){
     return 1;
 }
 
-int TestConsole::tick(void){
+uint8_t TestConsole::tick(void){
     if (Serial.available()){   //if there is a character
           if(process_cmd(Serial.read())){
                 term.locate(TERM_LOC_FEEDBACK);
@@ -120,7 +120,7 @@ int TestConsole::tick(void){
     }
 
 void TestConsole::update_status_bar(){
-    for(int i = 0; i < NUM_STATUS_LINES; i++){
+    for(uint8_t i = 0; i < NUM_STATUS_LINES; i++){
     term.locate(0,TERMINAL_HEIGHT-NUM_STATUS_LINES+i);
     Serial.print(sb_buffer[(next_status_line+1+i)%NUM_STATUS_LINES]);
     term.clear_to_eol();

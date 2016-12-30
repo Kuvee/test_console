@@ -29,7 +29,7 @@ Page& Page::add(MenuItem const &item_p) {
             item[num_menuitems] = item_p;  //make a local copy of the item
 
             MenuItem * active_item = &item[num_menuitems];
-            int item_data_start = active_item->name_len+ (LEVEL_INDENT * (active_item->level+1)) + DATA_GAP;
+            uint8_t item_data_start = active_item->name_len+ (LEVEL_INDENT * (active_item->level+1)) + DATA_GAP;
             
             if (item_data_start > data_start_x) data_start_x = item_data_start;   //keep track of length so we can put data after it
             
@@ -64,7 +64,7 @@ void Page::display(void){
     term->HideCursor();
     term->locate(0,0);
     term->printf("%s",name);
-        int index;
+        uint8_t index;
     
     for (index=0; index < num_menuitems; index++){
            term->locate(LEVEL_INDENT*(item[index].level+1),index+ITEM_ROW_START);
@@ -83,7 +83,7 @@ void Page::display(void){
 // Update the data on the Page
 void Page::update(void){
     char buf[32];
-    for (int index=0; index < num_menuitems; index++){
+    for (uint8_t index=0; index < num_menuitems; index++){
         if(!item[index].action) continue;
         
         term->locate(data_start_x,index+ITEM_ROW_START);

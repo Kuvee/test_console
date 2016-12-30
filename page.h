@@ -22,14 +22,14 @@ class Page{
     Page(const char * name_p, Terminal * term_p);
     const char * name;   //reference to the name of the Page
     Terminal * term;
-    int num_menuitems;
-    int data_start_x;    //starting column for printing the data
+    uint8_t num_menuitems;
+    uint8_t data_start_x;    //starting column for printing the data
     MenuItem item[MAX_MENUITEMS];
     char command_letter[MAX_MENUITEMS];  //the character in front of the menuitem
     char max_upper_letter_cmd;
     char max_lower_letter_cmd;
     char max_number_cmd;
-    int page_num;
+    uint8_t page_num;
     bool refresh_required;
     Page& add(Page *page_p) { return add(MenuItem((*page_p))); }
     Page& add(char const *text) { return add(MenuItem(text, NULL, 0, heading)); }

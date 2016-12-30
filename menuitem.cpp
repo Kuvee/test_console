@@ -13,7 +13,7 @@ MenuItem::MenuItem() :
 {}
 
 
-MenuItem::MenuItem(const char * name_p, MenuAction *action_p,  int level_p, MenuType type_p, int target_page_p):
+MenuItem::MenuItem(const char * name_p, MenuAction *action_p,  uint8_t level_p, MenuType type_p, uint8_t target_page_p):
     name(name_p),
     level(level_p),
     type(type_p),
