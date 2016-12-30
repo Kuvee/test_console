@@ -19,6 +19,7 @@ class Page{
     bool make_active_flag;
 
     MenuItem item[MAX_MENUITEMS];
+    char command_letter[MAX_MENUITEMS];  //the character in front of the menuitem
     MenuItem* add_menu_item(MenuItem const &item_p);
 
     public:
@@ -28,7 +29,6 @@ class Page{
     Terminal * term;
     uint8_t num_menuitems;
     uint8_t data_start_x;    //starting column for printing the data
-    char command_letter[MAX_MENUITEMS];  //the character in front of the menuitem
     char max_upper_letter_cmd;
     char max_lower_letter_cmd;
     char max_number_cmd;
@@ -43,6 +43,7 @@ class Page{
         return *this;
     }
     MenuItem& get_menu_item(int idx) { return item[idx]; }
+    char get_command_letter(int idx) { return command_letter[idx]; }
     void display();
         void update();
         char * set_active() {make_active_flag = true; return NULL;}  //flag the current page to be active
