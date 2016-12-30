@@ -15,15 +15,15 @@ extern Terminal term;
 //class MenuItem;   //forward declare
 
 class Page{
-    private:
+private:
     bool make_active_flag;
 
-    MenuItem item[MAX_MENUITEMS];
-    char command_letter[MAX_MENUITEMS];  //the character in front of the menuitem
+    MenuItem *items[MAX_MENUITEMS];
     MenuItem* add_menu_item(MenuItem const &item_p);
 
-    public:
     Page();
+
+public:
     Page(const char * name_p, Terminal * term_p);
     const char * name;   //reference to the name of the Page
     Terminal * term;
@@ -42,8 +42,8 @@ class Page{
         add_menu_item(MenuItem(text, action_p, 0, action_p ? ::display : ::heading));
         return *this;
     }
-    MenuItem& get_menu_item(int idx) { return item[idx]; }
-    char get_command_letter(int idx) { return command_letter[idx]; }
+    MenuItem const& get_menu_item(int idx) const { return *items[idx]; }
+    char get_command_letter(int idx) const { return items[idx]->command_letter; }
     void display();
         void update();
         char * set_active() {make_active_flag = true; return NULL;}  //flag the current page to be active

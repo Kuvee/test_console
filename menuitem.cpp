@@ -9,7 +9,8 @@ MenuItem::MenuItem() :
     level(0),
     name_len(0),
     data_col(0),
-    target_page(-1)
+    target_page(-1),
+    command_letter(0)
 {}
 
 
@@ -20,7 +21,8 @@ MenuItem::MenuItem(const char * name_p, MenuAction *action_p,  uint8_t level_p, 
     level(level_p),
     name_len(strlen(name_p)),
     data_col(0),
-    target_page(target_page_p)
+    target_page(target_page_p),
+    command_letter(0)
 {}
 
 MenuItem::MenuItem(Page &target_page_p):
@@ -30,5 +32,6 @@ MenuItem::MenuItem(Page &target_page_p):
     level(0),
     name_len(strlen(name)),
     data_col(0),
-    target_page(target_page_p.page_num)
+    target_page(target_page_p.page_num),
+    command_letter(0)
 {}

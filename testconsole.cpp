@@ -75,15 +75,15 @@ uint8_t TestConsole::process_cmd(char cmd){
         }
 
     for(int index=0; index < active_page->num_menuitems; index++) {
-        MenuItem *item = &active_page->get_menu_item(index);
+        MenuItem const & item = active_page->get_menu_item(index);
         if(active_page->get_command_letter(index) != cmd) continue;
 
-        if(item->type == menu) {
+        if(item.type == menu) {
             // for menuitems that goto other menus, just change the page
-            page_change(item->target_page);
-        } else if(item->action) {
+            page_change(item.target_page);
+        } else if(item.action) {
             // otherwise call the callaback
-            item->action->doAction();
+            item.action->doAction();
         }
         return 0;
     }

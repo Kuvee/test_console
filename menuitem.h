@@ -35,6 +35,7 @@ public:
     
     uint8_t data_col;   //column where the data is shown
     uint8_t target_page;  //the page to go to if called
+    char command_letter; // the character in front of menu item; set by Page
 };
 
 class MenuAction {
