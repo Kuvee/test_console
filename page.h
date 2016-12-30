@@ -17,6 +17,10 @@ extern Terminal term;
 class Page{
     private:
     bool make_active_flag;
+
+    MenuItem item[MAX_MENUITEMS];
+    MenuItem* add_menu_item(MenuItem const &item_p);
+
     public:
     Page();
     Page(const char * name_p, Terminal * term_p);
@@ -24,17 +28,21 @@ class Page{
     Terminal * term;
     uint8_t num_menuitems;
     uint8_t data_start_x;    //starting column for printing the data
-    MenuItem item[MAX_MENUITEMS];
     char command_letter[MAX_MENUITEMS];  //the character in front of the menuitem
     char max_upper_letter_cmd;
     char max_lower_letter_cmd;
     char max_number_cmd;
     uint8_t page_num;
     bool refresh_required;
-    Page& add(Page *page_p) { return add(MenuItem((*page_p))); }
-    Page& add(char const *text) { return add(MenuItem(text, NULL, 0, heading)); }
-    Page& add(char const *text, MenuAction *action_p) { return add(MenuItem(text, action_p, 0, ::display, -1)); }
-    Page& add(MenuItem const &item_p);
+    Page& add(Page *page_p) {
+        add_menu_item(MenuItem(*page_p));
+        return *this;
+    }
+    Page& add(char const *text, MenuAction *action_p=NULL) {
+        add_menu_item(MenuItem(text, action_p, 0, action_p ? ::display : ::heading));
+        return *this;
+    }
+    MenuItem& get_menu_item(int idx) { return item[idx]; }
     void display();
         void update();
         char * set_active() {make_active_flag = true; return NULL;}  //flag the current page to be active

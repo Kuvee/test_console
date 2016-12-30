@@ -75,7 +75,7 @@ uint8_t TestConsole::process_cmd(char cmd){
         }
 
     for(int index=0; index < active_page->num_menuitems; index++) {
-        MenuItem *item = &active_page->item[index];
+        MenuItem *item = &active_page->get_menu_item(index);
         if(active_page->command_letter[index] != cmd) continue;
 
         if(item->type == menu) {
