@@ -26,11 +26,11 @@ public:
     MenuItem(const char * name_p, MenuAction *action_p, uint8_t level, MenuType type_p, uint8_t target_page = -1);
     MenuItem(Page &target_page_p);  //construct a menu selection item this way
     const char *name;   //reference to the name 
-    uint8_t level;      //0 if primary 1 or greater if this is a sub-menu
     MenuType type;  //are we displaying something or controlling something
     
     MenuAction *action; //callback for getting/setting the data
     
+    uint8_t level;      //0 if primary 1 or greater if this is a sub-menu
     uint8_t name_len;
     
     uint8_t data_col;   //column where the data is shown
