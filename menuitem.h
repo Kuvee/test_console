@@ -74,6 +74,7 @@ public:
     void set() {doAction();};
     virtual bool get() {return trigger;};
     void clear() {trigger = false;};
+    void set_value(bool val) {trigger = val;};
     bool test_and_clear() {bool ret = trigger; trigger=false; return ret;}
 
 protected:
