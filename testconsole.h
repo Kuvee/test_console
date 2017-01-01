@@ -6,7 +6,7 @@
 #include <string.h>
 
 
-#define MAX_PAGES 9  
+#define MAX_PAGES 9
 #define TERMINAL_WIDTH 80
 #define TERMINAL_HEIGHT 24
 #define NUM_STATUS_LINES 6
@@ -31,12 +31,13 @@ class TestConsole {
     Terminal term;
     const char * name;   //reference to the name of the Program
     uint8_t num_pages;
-    uint8_t current_page, previous_page;
+    uint8_t current_page;
+    uint8_t previous_page[MAX_PAGES];
     Page * page[MAX_PAGES];
     Page * add_page(const char * name_p);
     uint8_t process_cmd(char cmd);
     uint8_t tick();
-    uint8_t page_change(int page);
+    uint8_t page_change(uint8_t page);
 
     void status_bar(const char* format, ...);
     void status_bar(const __FlashStringHelper* format);
@@ -44,7 +45,7 @@ class TestConsole {
 
     void update_status_bar();
     Page* get_active_page() {return active_page;};
-    
+
     };
 
 

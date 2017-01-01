@@ -8,19 +8,21 @@ TestConsole::TestConsole(const char * name_p):
     num_pages(0),
     current_page(0)
 {
- //    term.baud(baud_rate);
- //       term.printf("TestConsole::TestConsole('%')\r\n",name);
-        term.HideCursor();
-       for(int i = 0; i < MAX_PAGES; i++) page[i] = NULL;   //init all pages to NULL
-       active_page = page[current_page];
-
-       for(int i = 0; i < NUM_STATUS_LINES; i++) {
-             //fill the buffer will null terminated spaces
-            memset(sb_buffer[i], ' ',SZ_SB_BUF);
-            sb_buffer[i][SZ_SB_BUF-1]='\0';  //terminate string
-       }
-
+ //     term.baud(baud_rate);
+ //     term.printf("TestConsole::TestConsole('%')\r\n",name);
+    term.HideCursor();
+    for(int i = 0; i < MAX_PAGES; i++) {
+        page[i] = NULL;   //init all pages to NULL
+        previous_page[i] = i;
     }
+    active_page = page[current_page];
+
+    for(int i = 0; i < NUM_STATUS_LINES; i++) {
+         //fill the buffer will null terminated spaces
+        memset(sb_buffer[i], ' ',SZ_SB_BUF);
+        sb_buffer[i][SZ_SB_BUF-1] = '\0';  //terminate string
+    }
+}
 
 //Page& TestConsole::add_page(Page const &page_p){
 Page* TestConsole::add_page(const char * name_p){
@@ -44,12 +46,13 @@ Page* TestConsole::add_page(const char * name_p){
 
     }
 
-uint8_t TestConsole::page_change(int new_page){
+uint8_t TestConsole::page_change(uint8_t new_page){
             if(NULL == page[current_page]) {
                 term.printf("invalid page passed to page_chage\r\n");
                 return current_page;
                 }
-            previous_page = current_page;  //save a copy of the page so we can go back
+            //save a copy of the page so we can go back, but only up the tree
+            if(previous_page[current_page] != new_page) previous_page[new_page] = current_page;
             current_page = new_page;
             active_page = page[current_page];
 
@@ -66,7 +69,7 @@ uint8_t TestConsole::page_change(int new_page){
 //here, using knowledge of the page, we process commands
 uint8_t TestConsole::process_cmd(char cmd){
     if('x' == cmd) {
-        page_change(previous_page);
+        page_change(previous_page[current_page]);
         return 0;
     }
 
@@ -100,7 +103,7 @@ uint8_t TestConsole::tick(void){
         }
 
         //go through the list of pages, and see if any are set to become active
-        for(int index=0; index < num_pages; index++){
+        for(uint8_t index=0; index < num_pages; index++){
             if(page[index]->check_active()){
                  page_change(index);
                  sb_needs_update = true;

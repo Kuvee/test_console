@@ -7,7 +7,7 @@
 extern Terminal term;
 #define MAX_MENUITEMS 15
 #define LEVEL_INDENT 8
-#define DATA_GAP 4  
+#define DATA_GAP 4
 #define ITEM_ROW_START 3
 #define TERM_LOC_DEBUG 40,24   //x,y for printing debug info
 #define TERM_LOC_INPUT 10,23   // X,Y for getting input

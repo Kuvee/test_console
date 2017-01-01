@@ -25,14 +25,14 @@ public:
     MenuItem();
     MenuItem(const char * name_p, MenuAction *action_p, uint8_t level, MenuType type_p, uint8_t target_page = -1);
     MenuItem(Page &target_page_p);  //construct a menu selection item this way
-    const char *name;   //reference to the name 
+    const char *name;   //reference to the name
     MenuType type;  //are we displaying something or controlling something
-    
+
     MenuAction *action; //callback for getting/setting the data
-    
+
     uint8_t level;      //0 if primary 1 or greater if this is a sub-menu
     uint8_t name_len;
-    
+
     uint8_t data_col;   //column where the data is shown
     uint8_t target_page;  //the page to go to if called
     char command_letter; // the character in front of menu item; set by Page
@@ -43,18 +43,18 @@ public:
     MenuAction(char const *name):
         m_name(name)
     {}
-    
+
     char const *getName() {
         return m_name;
     }
-    
+
     virtual void getString(char *buf, uint8_t bufLen) {
         if(buf && bufLen > 0) {
             buf[0] = '\0';
         }
     }
     virtual void doAction() {}
-    
+
 private:
     char const *m_name;
 };
@@ -65,7 +65,7 @@ public:
     MenuTriggerVariable(char const *name, bool triggerinit=false):
         MenuAction(name)
     {trigger=triggerinit;}
-    
+
     virtual void getString(char *buf, uint8_t bufLen) {
         snprintf(buf, bufLen, "%d", trigger);
     }
@@ -85,7 +85,7 @@ class MenuToggleVariable: public MenuTriggerVariable {
 public:
        MenuToggleVariable(char const *name, bool triggerinit=false): MenuTriggerVariable(name, triggerinit) {override_val=-1;};
        void set() {trigger = true;};
-       void override(int8_t val) {override_val = val;}; 
+       void override(int8_t val) {override_val = val;};
        bool get() {
            if(override_val < 0) return MenuTriggerVariable::get();
            else return override_val;
@@ -101,7 +101,7 @@ public:
     MenuDigitalIn(char const *name, uint8_t myIO):
         MenuAction(name)
     {m_io=myIO;}
-    
+
     virtual void getString(char *buf, uint8_t bufLen) {
         snprintf(buf, bufLen, "%d", digitalRead(m_io));
     }
@@ -114,7 +114,7 @@ public:
     MenuDigitalOut(char const *name, uint8_t myIO):
         MenuAction(name)
     {value=0; m_io=myIO;}
-    
+
     virtual void getString(char *buf, uint8_t bufLen) {
         value = 0!=(*portOutputRegister(digitalPinToPort(m_io))&digitalPinToBitMask(m_io));
         snprintf(buf, bufLen, "%d", value);
@@ -128,15 +128,15 @@ private:
     uint8_t m_io;
 };
 
-#if 0 
+#if 0
 class MenuAnalogIn: public MenuAction {
 public:
     MenuAnalogIn(char const *name, AnalogIn const & myIO):
         MenuAction(name),
         m_io(myIO)
     {}
-    
-    virtual void getString(char *buf, int bufLen) {
+
+    virtual void getString(char *buf, uint8_t bufLen) {
         snprintf(buf, bufLen, "%f", m_io.read());
     }
 
@@ -149,8 +149,8 @@ class MenuNotImplementedAction:public MenuAction {
 public:
     MenuNotImplementedAction(char const *name):  MenuAction(name)
     {}
-    
-    virtual void getString(char *buf, int bufLen) {
+
+    virtual void getString(char *buf, uint8_t bufLen) {
         snprintf(buf, bufLen, "N/A");
     }
 };
@@ -161,14 +161,14 @@ public:
         MenuAction(name),
         m_value(false)
     {}
-    
+
     virtual void getString(char *buf, uint8_t bufLen) {
         snprintf(buf, bufLen, "%d", int(m_value));
     }
     virtual void doAction() {
         m_value = !m_value;
     }
-    
+
 private:
     bool m_value;
 };

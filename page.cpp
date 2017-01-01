@@ -61,7 +61,7 @@ void Page::display(void){
 
                 index++;  //add a space before the return line
         term->locate(LEVEL_INDENT,index+ITEM_ROW_START);
-                term->printf("x) Back to previous page");
+                term->printf("x) Back");
         update();
     }
 // Update the data on the Page
