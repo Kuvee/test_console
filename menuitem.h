@@ -174,6 +174,19 @@ private:
     bool m_value;
 };
 
+class MenuCounter: public MenuAction {
+  public:
+    MenuCounter(char const *name): MenuAction(name){count=0;};
+    virtual void doAction() {count = 0; };
+    virtual void getString(char *buf, uint8_t bufLen) {
+        snprintf(buf, bufLen, "%d ", count);
+    }
+    int increment(){return(++count);};
+  protected:
+    int count;
+
+};
+
 #ifdef __cplusplus
 } // extern "C"
 #endif
