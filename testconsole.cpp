@@ -77,6 +77,11 @@ uint8_t TestConsole::process_cmd(char cmd){
         return 0;
     }
 
+    if('q' == cmd) {
+        page_change(0);
+        return 0;
+    }
+
     if('\r' == cmd) {   //refresh the page on enter
         active_page->set_active();
         }
