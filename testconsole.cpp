@@ -13,7 +13,7 @@ TestConsole::TestConsole(const char * name_p):
     term.HideCursor();
     for(int i = 0; i < MAX_PAGES; i++) {
         page[i] = NULL;   //init all pages to NULL
-        previous_page[i] = i;
+        previous_page[i] = 0;  //if never changed, return from each page will go home
     }
     active_page = page[current_page];
 
@@ -51,8 +51,12 @@ uint8_t TestConsole::page_change(uint8_t new_page){
                 term.printf("invalid page passed to page_chage\r\n");
                 return current_page;
                 }
+
             //save a copy of the page so we can go back, but only up the tree
-            if(previous_page[current_page] != new_page) previous_page[new_page] = current_page;
+            if((new_page != current_page) &&
+               (previous_page[current_page] != new_page)) {
+                   previous_page[new_page] = current_page;
+               }
             current_page = new_page;
             active_page = page[current_page];
 
