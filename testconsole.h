@@ -6,7 +6,7 @@
 #include <string.h>
 
 
-#define MAX_PAGES 9
+#define MAX_PAGES 10
 #define TERMINAL_WIDTH 80
 #define TERMINAL_HEIGHT 24
 #define NUM_STATUS_LINES 6
