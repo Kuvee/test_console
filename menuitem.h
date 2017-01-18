@@ -179,14 +179,29 @@ class MenuCounter: public MenuAction {
     MenuCounter(char const *name): MenuAction(name){count=0;};
     virtual void doAction() {count = 0; };
     virtual void getString(char *buf, uint8_t bufLen) {
-        snprintf(buf, bufLen, "%d ", count);
+        snprintf(buf, bufLen, "%ld ", count);
     }
-    int increment(){return(++count);};
+    uint32_t increment(){return(++count);};
+    uint32_t get(){return count;};
   protected:
-    int count;
+    uint32_t count;
 
 };
 
+class MenuLongInt: public MenuAction {
+public:
+    MenuLongInt(char const *name, uint32_t val=0):
+        MenuAction(name)
+    {m_val=val;}
+
+    virtual void getString(char *buf, uint8_t bufLen) {
+        snprintf(buf, bufLen, "%ld", m_val);
+    }
+
+    void set(uint32_t val){m_val = val;};
+private:
+    uint32_t m_val;
+};
 #ifdef __cplusplus
 } // extern "C"
 #endif
