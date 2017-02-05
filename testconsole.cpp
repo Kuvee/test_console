@@ -104,6 +104,7 @@ uint8_t TestConsole::process_cmd(char cmd){
 }
 
 uint8_t TestConsole::tick(void){
+    static unsigned long last_display = millis();
     if (Serial.available()){   //if there is a character
           if(process_cmd(Serial.read())){
                 term.locate(TERM_LOC_FEEDBACK);
@@ -117,6 +118,12 @@ uint8_t TestConsole::tick(void){
                  page_change(index);
                  sb_needs_update = true;
                 }
+        }
+
+        //Every three seconds, update the display in case there is a new connection
+        if(millis() - last_display > 3000) {
+            active_page->display();
+            last_display = millis();
         }
 
         if(active_page != NULL)
