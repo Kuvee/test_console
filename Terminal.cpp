@@ -15,7 +15,7 @@
 #define ASCII_BORDER_BR 188
 #define WIDTH 30
 
-Terminal::Terminal()  {}
+Terminal::Terminal(HardwareSerial& serial): m_serial(serial) {}
 
 void Terminal::printf(const char* format, ...)
 {
@@ -24,15 +24,15 @@ void Terminal::printf(const char* format, ...)
     va_start(argptr, format);
     vsprintf(buffer, format, argptr);
     va_end(argptr);
-    Serial.print(buffer);
+    m_serial.print(buffer);
 }
 
 void Terminal::cls() {
-    Serial.print("\033[2J");
+    m_serial.print("\033[2J");
 }
 
 void Terminal::clear_to_eol() {
-       Serial.print("\033[K"); 
+       m_serial.print("\033[K");
 }
 
 void Terminal::HideCursor() {
@@ -65,44 +65,44 @@ void Terminal::background(uint32_t colour) {
     printf("\033[%dm", c);
 }
 
-void Terminal::box(int x, int y, int w, int h) { 
+void Terminal::box(int x, int y, int w, int h) {
      // corners
     locate(x, y);
-    Serial.write(ASCII_BORDER_TL);
+    m_serial.write(ASCII_BORDER_TL);
     locate(x + w - 1, y);
-    Serial.write(ASCII_BORDER_TR);
+    m_serial.write(ASCII_BORDER_TR);
     locate(x, y + h - 1);
-    Serial.write(ASCII_BORDER_BL);
+    m_serial.write(ASCII_BORDER_BL);
     locate(x + w - 1, y + h - 1);
-    Serial.write(ASCII_BORDER_BR);
-    
+    m_serial.write(ASCII_BORDER_BR);
+
     // top
     locate(x + 1, y);
     for(int i=0; i<(w-2); i++){
-        Serial.write(ASCII_BORDER_H);
+        m_serial.write(ASCII_BORDER_H);
     }
-    
+
     // bottom
     locate(x + 1, y + h - 1);
     for(int i=0; i<(w-2); i++){
-        Serial.write(ASCII_BORDER_H);
+        m_serial.write(ASCII_BORDER_H);
     }
-    
+
     // left
     locate(x, y + 1);
     for(int i=1; i<(h-1); i++){
-        Serial.write(ASCII_BORDER_V);
-        Serial.println();
-        Serial.write(0x08);
+        m_serial.write(ASCII_BORDER_V);
+        m_serial.println();
+        m_serial.write(0x08);
     }
-    
+
     // right
     locate(x + w - 1, y + 1);
     for(int i=1; i<(h-1); i++){
-        Serial.write(ASCII_BORDER_V);
-        Serial.println();
-        Serial.write(0x08);
-    }  
-} 
+        m_serial.write(ASCII_BORDER_V);
+        m_serial.println();
+        m_serial.write(0x08);
+    }
+}
 
 

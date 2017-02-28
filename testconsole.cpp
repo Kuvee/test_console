@@ -1,9 +1,9 @@
 #include "testconsole.h"
 
-TestConsole::TestConsole(const char * name_p):
+TestConsole::TestConsole(const char * name_p, HardwareSerial& serial):
     next_status_line(0),
     sb_needs_update(true),
-    term(),
+    term(serial),
     name(name_p),
     num_pages(0),
     current_page(0)
@@ -105,8 +105,8 @@ uint8_t TestConsole::process_cmd(char cmd){
 
 uint8_t TestConsole::tick(void){
     static unsigned long last_display = millis();
-    if (Serial.available()){   //if there is a character
-          if(process_cmd(Serial.read())){
+    if (term.m_serial.available()){   //if there is a character
+          if(process_cmd(term.m_serial.read())){
                 term.locate(TERM_LOC_FEEDBACK);
                 term.printf("invalid command");
             }

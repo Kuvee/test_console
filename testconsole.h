@@ -27,7 +27,7 @@ class TestConsole {
     };
 
     public:
-    TestConsole(const char * Name_p);
+    TestConsole(const char * Name_p, HardwareSerial& serial);
     Terminal term;
     const char * name;   //reference to the name of the Program
     uint8_t num_pages;

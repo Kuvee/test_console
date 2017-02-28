@@ -14,7 +14,7 @@
 class Terminal {
 public:
 
-    Terminal();
+    Terminal(HardwareSerial& serial);
 
     // printf(), put(), baud() etc - inherited from Serial
 
@@ -24,8 +24,9 @@ public:
     void locate(int column, int row);
     void foreground(uint32_t colour);
     void background(uint32_t colour);
-    void box(int x, int y, int w, int h); 
+    void box(int x, int y, int w, int h);
 	void printf(const char* format, ...);
+    HardwareSerial& m_serial;
 
 };
 
