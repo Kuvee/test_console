@@ -202,6 +202,23 @@ public:
 private:
     uint32_t m_val;
 };
+
+class MenuInt: public MenuAction {
+public:
+    MenuInt(char const *name, int& val):
+        MenuAction(name), m_val(val)
+    {m_val=val;}
+
+    virtual void getString(char *buf, uint8_t bufLen) {
+        snprintf(buf, bufLen, "%d", m_val);
+    }
+
+    void set(uint32_t val){m_val = val;};
+private:
+    int& m_val;
+};
+
+
 #ifdef __cplusplus
 } // extern "C"
 #endif
