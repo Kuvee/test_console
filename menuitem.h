@@ -36,6 +36,7 @@ public:
     uint8_t data_col;   //column where the data is shown
     uint8_t target_page;  //the page to go to if called
     char command_letter; // the character in front of menu item; set by Page
+
 };
 
 class MenuAction {
@@ -54,6 +55,8 @@ public:
         }
     }
     virtual void doAction() {}
+    void fmtDouble(double val, byte precision, char *buf, unsigned bufLen = 0xffff);
+    unsigned fmtUnsigned(unsigned long val, char *buf, unsigned bufLen = 0xffff, byte width = 0);
 
 private:
     char const *m_name;
@@ -218,6 +221,20 @@ private:
     int& m_val;
 };
 
+class MenuDouble: public MenuAction {
+public:
+    MenuDouble(char const *name, double val):
+        MenuAction(name), m_val(val)
+    {m_val=val;}
+
+    virtual void getString(char *buf, uint8_t bufLen) {
+        fmtDouble(m_val, 3, buf, bufLen);
+    }
+
+    void set(double val){m_val = val;};
+private:
+    double m_val;
+};
 
 #ifdef __cplusplus
 } // extern "C"
