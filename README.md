@@ -1,7 +1,7 @@
 # test_console
 Arduino library that make easy page-based user interfaces - it supports multiple configurable pages, and displays live data using ncurses.
 Also supports a status bar, for debug messages.  Below is an example display.
-
+```
 Home Page v0.95                                                                 
                                                                                 
                                                                                 
@@ -13,8 +13,6 @@ Home Page v0.95
                                                                                 
         x) Back                                                                 
                                                                                 
-                                                                                
-                                                                                
-                                                                                                                                                               
+                 
 ValveDropStation: Not enough valves to continue     
-
+```
